@@ -1,0 +1,4 @@
+owner: Jupisky
+repo: jupisky-ui
+provider: github
+updaterCacheDirName: safe-react-updater

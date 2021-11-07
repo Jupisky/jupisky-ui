@@ -1,0 +1,177 @@
+import { useContext, useEffect, useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { SnackbarProvider } from 'notistack'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouteMatch, useHistory } from 'react-router-dom'
+import styled from 'styled-components'
+
+import AlertIcon from 'src/assets/icons/alert.svg'
+import CheckIcon from 'src/assets/icons/check.svg'
+import ErrorIcon from 'src/assets/icons/error.svg'
+import InfoIcon from 'src/assets/icons/info.svg'
+import AppLayout from 'src/components/AppLayout'
+import { SafeListSidebar, SafeListSidebarContext } from 'src/components/SafeListSidebar'
+//import CookiesBanner from 'src/components/CookiesBanner'
+import Notifier from 'src/components/Notifier'
+import Backdrop from 'src/components/layout/Backdrop'
+import Img from 'src/components/layout/Img'
+import { ETHEREUM_NETWORK } from 'src/config/networks/network.d'
+import { currentChainId } from 'src/logic/config/store/selectors'
+import { networkSelector } from 'src/logic/wallets/store/selectors'
+import { currentSafeWithNames } from 'src/logic/safe/store/selectors'
+import { currentCurrencySelector } from 'src/logic/currencyValues/store/selectors'
+import Modal from 'src/components/Modal'
+import SendModal from 'src/routes/safe/components/Balances/SendModal'
+import { useLoadSafe } from 'src/logic/safe/hooks/useLoadSafe'
+import { useSafeScheduledUpdates } from 'src/logic/safe/hooks/useSafeScheduledUpdates'
+import useSafeActions from 'src/logic/safe/hooks/useSafeActions'
+import { formatAmountInUsFormat } from 'src/logic/tokens/utils/formatAmount'
+import { grantedSelector } from 'src/routes/safe/container/selector'
+import ReceiveModal from './ReceiveModal'
+import { useSidebarItems } from 'src/components/AppLayout/Sidebar/useSidebarItems'
+import useAddressBookSync from 'src/logic/addressBook/hooks/useAddressBookSync'
+import { extractSafeAddress, ADDRESSED_ROUTE, WELCOME_ROUTE } from 'src/routes/routes'
+import { addressBookImport } from 'src/logic/addressBook/store/actions'
+
+const notificationStyles = {
+  success: {
+    background: '#fff',
+  },
+  error: {
+    background: '#ffe6ea',
+  },
+  warning: {
+    background: '#fff3e2',
+  },
+  info: {
+    background: '#fff',
+  },
+}
+
+const Frame = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  max-width: 100%;
+`
+
+const useStyles = makeStyles(notificationStyles)
+
+let fetchAddressBook = true
+
+const App: React.FC = ({ children }) => {
+  const classes = useStyles()
+  const desiredNetwork = useSelector(currentChainId)
+  const currentNetwork = useSelector(networkSelector)
+  const isWrongNetwork = currentNetwork !== ETHEREUM_NETWORK.UNKNOWN && currentNetwork !== desiredNetwork
+  const { toggleSidebar } = useContext(SafeListSidebarContext)
+  const matchSafe = useRouteMatch(ADDRESSED_ROUTE)
+  const history = useHistory()
+  const { name: safeName, totalFiatBalance: currentSafeBalance } = useSelector(currentSafeWithNames)
+  const addressFromUrl = extractSafeAddress()
+  const { safeActionsState, onShow, onHide, showSendFunds, hideSendFunds } = useSafeActions()
+  const currentCurrency = useSelector(currentCurrencySelector)
+  const granted = useSelector(grantedSelector)
+  const sidebarItems = useSidebarItems()
+  const safeLoaded = useLoadSafe(addressFromUrl)
+  useSafeScheduledUpdates(safeLoaded, addressFromUrl)
+  useAddressBookSync()
+
+  const dispatch = useDispatch()
+
+  const sendFunds = safeActionsState.sendFunds
+  const formattedTotalBalance = currentSafeBalance ? formatAmountInUsFormat(currentSafeBalance.toString()) : ''
+  const balance =
+    !!formattedTotalBalance && !!currentCurrency ? `${formattedTotalBalance} ${currentCurrency}` : undefined
+
+  useEffect(() => {
+    if (matchSafe?.isExact) {
+      history.push(WELCOME_ROUTE)
+    }
+  }, [matchSafe, history])
+
+  const onReceiveShow = () => onShow('Receive')
+  const onReceiveHide = () => onHide('Receive')
+
+  if(fetchAddressBook == true){
+  fetch(
+    "https://raw.githubusercontent.com/Jupisky/jupisky-address-book/main/address-book.json"
+  )
+    .then(res => {
+      return res.json()
+    })
+    .then(data => {
+      dispatch(addressBookImport(data))
+      fetchAddressBook = false
+    })
+    .catch((error) => console.log(error))
+}
+
+
+  return (
+    <Frame>
+      <Backdrop isOpen={isWrongNetwork} />
+      <SnackbarProvider
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        classes={{
+          variantSuccess: classes.success,
+          variantError: classes.error,
+          variantWarning: classes.warning,
+          variantInfo: classes.info,
+        }}
+        iconVariant={{
+          error: <Img alt="Error" src={ErrorIcon} />,
+          info: <Img alt="Info" src={InfoIcon} />,
+          success: <Img alt="Success" src={CheckIcon} />,
+          warning: <Img alt="Warning" src={AlertIcon} />,
+        }}
+        maxSnack={5}
+      >
+        <>
+          <Notifier />
+
+          <AppLayout
+            sidebarItems={sidebarItems}
+            safeAddress={addressFromUrl}
+            safeName={safeName}
+            balance={balance}
+            granted={granted}
+            onToggleSafeList={toggleSidebar}
+            onReceiveClick={onReceiveShow}
+            onNewTransactionClick={() => showSendFunds('')}
+          >
+            {children}
+          </AppLayout>
+
+          <SendModal
+            activeScreenType="chooseTxType"
+            isOpen={sendFunds.isOpen}
+            onClose={hideSendFunds}
+            selectedToken={sendFunds.selectedToken}
+          />
+
+          {addressFromUrl && (
+            <Modal
+              description="Receive Tokens Form"
+              handleClose={onReceiveHide}
+              open={safeActionsState.showReceive}
+              paperClassName="receive-modal"
+              title="Receive Tokens"
+            >
+              <ReceiveModal onClose={onReceiveHide} safeAddress={addressFromUrl} safeName={safeName} />
+            </Modal>
+          )}
+        </>
+      </SnackbarProvider>
+      {/*<CookiesBanner />*/}
+    </Frame>
+  )
+}
+
+const WrapperAppWithSidebar: React.FC = ({ children }) => (
+  <SafeListSidebar>
+    <App>{children}</App>
+  </SafeListSidebar>
+)
+
+export default WrapperAppWithSidebar
