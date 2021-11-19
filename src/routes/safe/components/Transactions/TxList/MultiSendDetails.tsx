@@ -1,4 +1,4 @@
-import { AccordionSummary, IconText } from '@jupisky/jupisky-react-components'
+import { AccordionSummary, IconText } from '@gnosis.pm/safe-react-components'
 import { DataDecoded, TransactionData } from '@gnosis.pm/safe-react-gateway-sdk'
 import { ReactElement, ReactNode } from 'react'
 

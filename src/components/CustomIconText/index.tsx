@@ -1,4 +1,4 @@
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import { ReactElement } from 'react'
 
 type Props = {

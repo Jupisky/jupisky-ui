@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Map } from 'immutable'
 import { render, RenderResult } from '@testing-library/react'
-import { theme as styledTheme } from '@jupisky/jupisky-react-components'
+import { theme as styledTheme } from '@gnosis.pm/safe-react-components'
 import Providers from 'src/components/Providers'
 import { createCustomStore, store } from 'src/store'
 import { history } from 'src/routes/routes'

@@ -1,4 +1,4 @@
-import { Loader } from '@jupisky/jupisky-react-components'
+import { Loader } from '@gnosis.pm/safe-react-components'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TablePagination from '@material-ui/core/TablePagination'

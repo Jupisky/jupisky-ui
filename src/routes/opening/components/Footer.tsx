@@ -1,7 +1,7 @@
 import { ReactElement, SyntheticEvent } from 'react'
 import styled from 'styled-components'
 
-import { Icon, Link, Loader, Text } from '@jupisky/jupisky-react-components'
+import { Icon, Link, Loader, Text } from '@gnosis.pm/safe-react-components'
 
 import Button from 'src/components/layout/Button'
 import { getExplorerInfo } from 'src/config'
@@ -81,7 +81,7 @@ export const ContinueFooter = ({
     >
       {continueButtonDisabled ? (
         <>
-          <Loader size="xs" color="secondaryLight" /> <LoaderText>Loading your safe</LoaderText>
+          <Loader size="xs" color="secondaryLight" /> <LoaderText>Loading jupisky</LoaderText>
         </>
       ) : (
         <>Get started</>

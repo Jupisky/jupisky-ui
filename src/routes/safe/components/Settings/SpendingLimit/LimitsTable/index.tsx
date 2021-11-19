@@ -1,4 +1,4 @@
-import { Text, Icon } from '@jupisky/jupisky-react-components'
+import { Text, Icon } from '@gnosis.pm/safe-react-components'
 import TableContainer from '@material-ui/core/TableContainer'
 import cn from 'classnames'
 import { ReactElement, useState } from 'react'

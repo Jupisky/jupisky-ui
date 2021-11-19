@@ -39,7 +39,7 @@ import { currentSafeSpendingLimits } from 'src/logic/safe/store/selectors'
 import { sameString } from 'src/utils/strings'
 
 import { styles } from './style'
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import { spendingLimitAllowedBalance, getSpendingLimitByTokenAddress } from 'src/logic/safe/utils/spendingLimits'
 import { getBalanceAndDecimalsFromToken } from 'src/logic/tokens/utils/tokenHelpers'
 import { getNetworkInfo } from 'src/config'

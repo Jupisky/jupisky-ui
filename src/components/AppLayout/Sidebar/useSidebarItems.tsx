@@ -14,6 +14,7 @@ import {
   SAFE_SUBSECTION_ROUTE,
   generatePrefixedAddressRoutes,
 } from 'src/routes/routes'
+import { IS_PRODUCTION } from 'src/utils/constants'
 
 const useSidebarItems = (): ListItemType[] => {
   const featuresEnabled = useSelector(currentSafeFeaturesEnabled)
@@ -30,17 +31,15 @@ const useSidebarItems = (): ListItemType[] => {
   const matchSafeWithSidebarSection = useRouteMatch(`${SAFE_SUBSECTION_ROUTE}?`)
 
   const makeEntryItem = useCallback(
-    ({ label, disabled, badge, iconType, href, subItems }) => {
-      return {
-        label,
-        badge,
-        disabled,
-        icon: <ListIcon type={iconType} />,
-        selected: href === matchSafeWithSidebarSection?.url,
-        href,
-        subItems,
-      }
-    },
+    ({ label, disabled, badge, iconType, href, subItems }) => ({
+      label,
+      badge,
+      disabled,
+      icon: <ListIcon type={iconType} />,
+      selected: href === matchSafeWithSidebarSection?.url,
+      href,
+      subItems,
+    }),
     [matchSafeWithSidebarSection],
   )
 
@@ -75,6 +74,13 @@ const useSidebarItems = (): ListItemType[] => {
         iconType: 'info',
         href: currentSafeRoutes.SETTINGS_DETAILS,
       }),
+      IS_PRODUCTION
+        ? null
+        : makeEntryItem({
+            label: 'Appearance',
+            iconType: 'eye',
+            href: currentSafeRoutes.SETTINGS_APPEARANCE,
+          }),
       makeEntryItem({
         label: 'Owners',
         iconType: 'owners',
@@ -96,7 +102,7 @@ const useSidebarItems = (): ListItemType[] => {
         iconType: 'settingsTool',
         href: currentSafeRoutes.SETTINGS_ADVANCED,
       }),
-    ]
+    ].filter(Boolean)
 
     return [
       makeEntryItem({

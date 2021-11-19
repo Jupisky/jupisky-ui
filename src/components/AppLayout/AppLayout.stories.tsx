@@ -1,4 +1,4 @@
-import { Icon } from '@jupisky/jupisky-react-components'
+import { Icon } from '@gnosis.pm/safe-react-components'
 import { ListItemType } from 'src/components/List'
 import Layout from '.'
 

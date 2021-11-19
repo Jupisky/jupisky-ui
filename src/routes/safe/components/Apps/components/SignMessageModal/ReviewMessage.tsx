@@ -1,5 +1,5 @@
 import { Operation } from '@gnosis.pm/safe-react-gateway-sdk'
-import { EthHashInfo, Icon, Text } from '@jupisky/jupisky-react-components'
+import { EthHashInfo, Icon, Text } from '@gnosis.pm/safe-react-components'
 import MuiTextField from '@material-ui/core/TextField'
 import { ReactElement, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

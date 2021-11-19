@@ -1,4 +1,4 @@
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import { KeyboardEvent, ReactElement, useEffect, useState } from 'react'
 import { useForm, useFormState } from 'react-final-form'
 import { useSelector } from 'react-redux'

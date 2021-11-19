@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import IconButton from '@material-ui/core/IconButton'
 import Close from '@material-ui/icons/Close'
-import { Icon } from '@jupisky/jupisky-react-components'
+import { Icon } from '@gnosis.pm/safe-react-components'
 
 import Paragraph from 'src/components/layout/Paragraph'
 import { md, lg } from 'src/theme/variables'

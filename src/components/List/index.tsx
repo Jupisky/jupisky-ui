@@ -8,7 +8,7 @@ import ListMui from '@material-ui/core/List'
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Collapse from '@material-ui/core/Collapse'
-import { FixedIcon } from '@jupisky/jupisky-react-components'
+import { FixedIcon } from '@gnosis.pm/safe-react-components'
 
 const StyledListItem = styled(ListItem)<ListItemProps>`
   &.MuiButtonBase-root.MuiListItem-root {

@@ -33,7 +33,8 @@ import { isTxPendingError } from 'src/logic/wallets/getWeb3'
 import { Errors, logError } from 'src/logic/exceptions/CodedException'
 import { currentChainId } from 'src/logic/config/store/selectors'
 import { generateSafeRoute, history, SAFE_ROUTES } from 'src/routes/routes'
-import { getCurrentShortChainName } from 'src/config'
+import { getCurrentShortChainName, getNetworkId } from 'src/config'
+import { ETHEREUM_NETWORK } from 'src/config/networks/network.d'
 
 export interface CreateTransactionArgs {
   navigateToTransactionsTab?: boolean
@@ -47,6 +48,7 @@ export interface CreateTransactionArgs {
   valueInWei: string
   safeTxGas?: string
   ethParameters?: Pick<TxParameters, 'ethNonce' | 'ethGasLimit' | 'ethGasPriceInGWei'>
+  delayExecution?: boolean
 }
 
 type CreateTransactionAction = ThunkAction<Promise<void | string>, AppReduxState, DispatchReturn, AnyAction>
@@ -73,6 +75,7 @@ export const createTransaction =
       origin = null,
       safeTxGas: safeTxGasArg,
       ethParameters,
+      delayExecution = false,
     }: CreateTransactionArgs,
     onUserConfirm?: ConfirmEventHandler,
     onError?: ErrorEventHandler,
@@ -100,7 +103,7 @@ export const createTransaction =
     const nextNonce = await getNewTxNonce(lastTx, safeInstance)
     const nonce = txNonce !== undefined ? txNonce.toString() : nextNonce
 
-    const isExecution = await shouldExecuteTransaction(safeInstance, nonce, lastTx)
+    const isExecution = !delayExecution && (await shouldExecuteTransaction(safeInstance, nonce, lastTx))
     let safeTxGas = safeTxGasArg || '0'
     try {
       if (safeTxGasArg === undefined) {
@@ -148,11 +151,12 @@ export const createTransaction =
       }
 
       const tx = isExecution ? getExecutionTransaction(txArgs) : getApprovalTransaction(safeInstance, safeTxHash)
+      const gasParam = getNetworkId() === ETHEREUM_NETWORK.MAINNET ? 'maxFeePerGas' : 'gasPrice'
       const sendParams: PayableTx = {
         from,
         value: 0,
         gas: ethParameters?.ethGasLimit,
-        maxFeePerGas: ethParameters?.ethGasPriceInGWei,
+        [gasParam]: ethParameters?.ethGasPriceInGWei,
         nonce: ethParameters?.ethNonce,
       }
 

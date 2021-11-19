@@ -1,4 +1,4 @@
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { ReactElement, useState } from 'react'
 

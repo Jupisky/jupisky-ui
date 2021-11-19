@@ -17,7 +17,7 @@ import CheckIcon from 'src/routes/safe/components/CurrencyDropdown/img/check.svg
 import { useDropdownStyles } from 'src/routes/safe/components/CurrencyDropdown/style'
 import { DropdownListTheme } from 'src/theme/mui'
 import { extractUsefulMethods, AbiItemExtended } from 'src/logic/contractInteraction/sources/ABIService'
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 
 const MENU_WIDTH = '452px'

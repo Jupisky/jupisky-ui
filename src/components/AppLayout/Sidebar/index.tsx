@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Divider, IconText } from '@jupisky/jupisky-react-components'
+import { Divider, IconText } from '@gnosis.pm/safe-react-components'
 
 import List, { ListItemType } from 'src/components/List'
 import SafeHeader from './SafeHeader'

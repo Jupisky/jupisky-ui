@@ -1,4 +1,4 @@
-import { FixedDialog, Text } from '@jupisky/jupisky-react-components'
+import { FixedDialog, Text } from '@gnosis.pm/safe-react-components'
 
 interface OwnProps {
   onCancel: () => void

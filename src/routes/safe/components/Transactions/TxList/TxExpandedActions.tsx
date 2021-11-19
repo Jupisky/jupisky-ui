@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@jupisky/jupisky-react-components'
+import { Button, Tooltip } from '@gnosis.pm/safe-react-components'
 import { MultisigExecutionInfo } from '@gnosis.pm/safe-react-gateway-sdk'
 import { ReactElement } from 'react'
 import { useSelector } from 'react-redux'

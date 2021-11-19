@@ -1,11 +1,11 @@
-import { Menu, Breadcrumb, BreadcrumbElement, Tab } from '@jupisky/jupisky-react-components'
-import { Item } from '@jupisky/jupisky-react-components/dist/navigation/Tab'
+import { Menu, Breadcrumb, BreadcrumbElement, Tab } from '@gnosis.pm/safe-react-components'
+import { Item } from '@gnosis.pm/safe-react-components/dist/navigation/Tab'
 import { ReactElement, useEffect } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 
 import Col from 'src/components/layout/Col'
 import { extractPrefixedSafeAddress, generateSafeRoute, SAFE_ROUTES } from 'src/routes/routes'
-import { SAFE_NAVIGATION_EVENT, useAnalytics } from 'src/utils/googleAnalytics'
+import { SAFE_EVENTS, useAnalytics } from 'src/utils/googleAnalytics'
 import { HistoryTransactions } from './HistoryTransactions'
 import { QueueTransactions } from './QueueTransactions'
 import { ContentWrapper, Wrapper } from './styled'
@@ -22,7 +22,7 @@ const GatewayTransactions = (): ReactElement => {
   const { trackEvent } = useAnalytics()
 
   useEffect(() => {
-    trackEvent({ category: SAFE_NAVIGATION_EVENT, action: 'Transactions' })
+    trackEvent(SAFE_EVENTS.TRANSACTIONS)
   }, [trackEvent])
 
   const onTabChange = (path: string) => history.replace(generateSafeRoute(path, extractPrefixedSafeAddress()))

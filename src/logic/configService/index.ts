@@ -17,14 +17,6 @@ enum Endpoints {
 }
 
 export const fetchSafeConfig = async (networkId: string): Promise<NetworkConfig> => {
-
-/* constants.ts
-export const CONFIG_SERVICE_URL =
-  process.env.CONFIG_SERVICE_URL || IS_PRODUCTION
-    ? 'https://safe-config.gnosis.io/api/v1'
-    : 'https://safe-config.staging.gnosisdev.com/api/v1'
-*/
-
   const url = `${CONFIG_SERVICE_URL}/chains/${networkId}`
 
   return axios.post(url).then(({ data }) => data)
@@ -32,7 +24,6 @@ export const CONFIG_SERVICE_URL =
 
 export const fetchSafeAppsList = async (): Promise<RemoteAppData[]> => {
   const networkId = getNetworkId()
-
   const data = axios.get(`${CONFIG_SERVICE_URL}jupisky-apps/main/appListChain${networkId}.json`).then(({ data }) => data)
 
   return data

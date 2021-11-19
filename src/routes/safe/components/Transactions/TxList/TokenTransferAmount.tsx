@@ -1,4 +1,4 @@
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import { TokenType } from '@gnosis.pm/safe-react-gateway-sdk'
 import { ReactElement } from 'react'
 import styled from 'styled-components'

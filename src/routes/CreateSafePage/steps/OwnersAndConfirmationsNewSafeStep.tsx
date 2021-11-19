@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import MenuItem from '@material-ui/core/MenuItem'
-import { Icon, Link, Text } from '@jupisky/jupisky-react-components'
+import { Icon, Link, Text } from '@gnosis.pm/safe-react-components'
 import { useForm } from 'react-final-form'
 
 import Block from 'src/components/layout/Block'

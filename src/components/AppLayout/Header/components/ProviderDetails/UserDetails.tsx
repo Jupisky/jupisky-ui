@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles'
-import { EthHashInfo, Identicon, Card } from '@jupisky/jupisky-react-components'
+import { EthHashInfo, Identicon, Card } from '@gnosis.pm/safe-react-components'
 import { createStyles } from '@material-ui/core'
 
 import Spacer from 'src/components/Spacer'

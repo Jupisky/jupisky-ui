@@ -2,7 +2,7 @@ import { EstimationStatus } from 'src/logic/hooks/useEstimateTransactionGas'
 import Paragraph from 'src/components/layout/Paragraph'
 import { getNetworkInfo } from 'src/config'
 import { TransactionFailText } from 'src/components/TransactionFailText'
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 
 type TransactionFailTextProps = {
   txEstimationExecutionStatus: EstimationStatus

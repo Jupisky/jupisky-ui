@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react'
-import { ButtonLink } from '@jupisky/jupisky-react-components'
+import { ButtonLink } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'

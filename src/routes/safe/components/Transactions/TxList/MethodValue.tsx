@@ -1,4 +1,4 @@
-import { Text, EthHashInfo } from '@jupisky/jupisky-react-components'
+import { Text, EthHashInfo } from '@gnosis.pm/safe-react-components'
 
 import styled from 'styled-components'
 

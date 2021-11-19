@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 
 import { getExplorerInfo, getNetworkInfo } from 'src/config'

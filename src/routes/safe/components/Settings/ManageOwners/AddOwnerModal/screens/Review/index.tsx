@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { ReactElement, useEffect, useState, Fragment } from 'react'
 import { useSelector } from 'react-redux'
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 
 import { getExplorerInfo } from 'src/config'
 import Block from 'src/components/layout/Block'

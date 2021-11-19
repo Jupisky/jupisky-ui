@@ -33,6 +33,9 @@ import { Confirmation } from 'src/logic/safe/store/models/types/confirmation'
 import { Operation, TransactionStatus } from '@gnosis.pm/safe-react-gateway-sdk'
 import { isTxPendingError } from 'src/logic/wallets/getWeb3'
 import { Errors, logError } from 'src/logic/exceptions/CodedException'
+import { getNetworkId } from 'src/config'
+import { ETHEREUM_NETWORK } from 'src/config/networks/network.d'
+import { onboardUser } from 'src/components/ConnectButton'
 
 interface ProcessTransactionArgs {
   approveAndExecute: boolean
@@ -72,6 +75,9 @@ export const processTransaction =
     thresholdReached,
   }: ProcessTransactionArgs): ProcessTransactionAction =>
   async (dispatch: Dispatch, getState: () => AppReduxState): Promise<DispatchReturn> => {
+    const ready = await onboardUser()
+    if (!ready) return
+
     const state = getState()
 
     const { account: from, hardwareWallet, smartContractWallet } = providerSelector(state)
@@ -142,11 +148,12 @@ export const processTransaction =
 
       transaction = isExecution ? getExecutionTransaction(txArgs) : getApprovalTransaction(safeInstance, tx.safeTxHash)
 
+      const gasParam = getNetworkId() === ETHEREUM_NETWORK.MAINNET ? 'maxFeePerGas' : 'gasPrice'
       const sendParams: PayableTx = {
         from,
         value: 0,
         gas: ethParameters?.ethGasLimit,
-        maxFeePerGas: ethParameters?.ethGasPriceInGWei,
+        [gasParam]: ethParameters?.ethGasPriceInGWei,
         nonce: ethParameters?.ethNonce,
       }
 

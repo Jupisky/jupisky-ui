@@ -1,4 +1,4 @@
-import { AccordionDetails } from '@jupisky/jupisky-react-components'
+import { AccordionDetails } from '@gnosis.pm/safe-react-components'
 import { ReactElement } from 'react'
 
 import { isCreationTxInfo, Transaction } from 'src/logic/safe/store/models/types/gateway.d'

@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useForm } from 'react-final-form'
 import { useSelector } from 'react-redux'
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 import TableContainer from '@material-ui/core/TableContainer'
 

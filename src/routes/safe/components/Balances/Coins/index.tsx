@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow'
 import { Skeleton } from '@material-ui/lab'
 
 import InfoIcon from 'src/assets/icons/info_red.svg'
-import { FixedIcon, Text, Button } from '@jupisky/jupisky-react-components'
+import { FixedIcon, Text, Button } from '@gnosis.pm/safe-react-components'
 
 import Img from 'src/components/layout/Img'
 import Table from 'src/components/Table'
@@ -26,7 +26,7 @@ import {
   BalanceData,
 } from 'src/routes/safe/components/Balances/dataFetcher'
 import { extendedSafeTokensSelector, grantedSelector } from 'src/routes/safe/container/selector'
-import { useAnalytics, SAFE_NAVIGATION_EVENT } from 'src/utils/googleAnalytics'
+import { useAnalytics, SAFE_EVENTS } from 'src/utils/googleAnalytics'
 import { makeStyles } from '@material-ui/core/styles'
 import { styles } from './styles'
 import { currentCurrencySelector } from 'src/logic/currencyValues/store/selectors'
@@ -82,7 +82,7 @@ const Coins = (props: Props): React.ReactElement => {
   const { trackEvent } = useAnalytics()
 
   useEffect(() => {
-    trackEvent({ category: SAFE_NAVIGATION_EVENT, action: 'Coins' })
+    trackEvent(SAFE_EVENTS.COINS)
   }, [trackEvent])
 
   const filteredData: List<BalanceData> = useMemo(
@@ -142,7 +142,7 @@ const Coins = (props: Props): React.ReactElement => {
                 <Row align="end" className={classes.actions}>
                   {granted && (
                     <StyledButton
-                      color="secondary"
+                      color="primary"
                       onClick={() => showSendFunds(row.asset.address)}
                       size="md"
                       variant="contained"
@@ -154,7 +154,7 @@ const Coins = (props: Props): React.ReactElement => {
                       </Text>
                     </StyledButton>
                   )}
-                  <StyledButton color="secondary" onClick={showReceiveFunds} size="md" variant="contained">
+                  <StyledButton color="primary" onClick={showReceiveFunds} size="md" variant="contained">
                     <FixedIcon type="arrowReceivedWhite" />
                     <Text size="xl" color="white">
                       Receive

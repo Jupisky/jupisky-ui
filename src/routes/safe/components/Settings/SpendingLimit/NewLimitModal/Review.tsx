@@ -1,4 +1,4 @@
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 import { Store } from 'redux'
 import { History } from 'history'
-import { theme } from '@jupisky/jupisky-react-components'
+import { theme } from '@gnosis.pm/safe-react-components'
 
 declare type Theme = typeof theme
 

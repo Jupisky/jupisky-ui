@@ -1,4 +1,4 @@
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import { ReactElement, useState } from 'react'
 
 import TextField from 'src/components/forms/TextField'

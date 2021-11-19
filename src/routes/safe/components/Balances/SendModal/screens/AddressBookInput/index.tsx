@@ -1,4 +1,4 @@
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import MuiTextField from '@material-ui/core/TextField'
 import Autocomplete, { AutocompleteProps } from '@material-ui/lab/Autocomplete'
 import { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react'

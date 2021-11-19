@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react'
 
 import styled from 'styled-components'
-import { Text } from '@jupisky/jupisky-react-components'
+import { Text } from '@gnosis.pm/safe-react-components'
 import { Modal } from 'src/components/Modal'
 import { CSVReader } from 'react-papaparse'
 import { ParseResult } from 'papaparse'
@@ -114,7 +114,7 @@ const ImportEntriesModal = ({ importEntryModalHandler, isOpen, onClose }: Import
                 borderRadius: 8,
               },
               dropAreaActive: {
-                borderColor: '#00D6EB',
+                borderColor: '#008C73',
               },
               dropFile: {
                 width: 200,
@@ -131,7 +131,7 @@ const ImportEntriesModal = ({ importEntryModalHandler, isOpen, onClose }: Import
                 top: '12px',
               },
               fileNameInfo: {
-                color: importError === '' ? '#00D6EB' : '#DB3A3D',
+                color: importError === '' ? '#008C73' : '#DB3A3D',
                 backgroundColor: '#fff',
                 fontSize: 14,
                 lineHeight: 1.4,
@@ -141,7 +141,7 @@ const ImportEntriesModal = ({ importEntryModalHandler, isOpen, onClose }: Import
                 overflow: 'hidden',
               },
               progressBar: {
-                backgroundColor: '#00D6EB',
+                backgroundColor: '#008C73',
               },
               removeButton: {
                 color: '#DB3A3D',
@@ -162,7 +162,7 @@ const ImportEntriesModal = ({ importEntryModalHandler, isOpen, onClose }: Import
           )}
           {!csvLoaded && importError === '' && (
             <Text color="text" as="p" size="xl">
-              Only CSV files exported from Jupisky are allowed. <br />
+              Only CSV files exported from Gnosis Safe are allowed. <br />
               <HelpInfo />
             </Text>
           )}
@@ -178,7 +178,7 @@ const ImportEntriesModal = ({ importEntryModalHandler, isOpen, onClose }: Import
         <Modal.Footer.Buttons
           cancelButtonProps={{ onClick: () => handleClose() }}
           confirmButtonProps={{
-            color: 'secondary',
+            color: 'primary',
             disabled: !csvLoaded || importError !== '',
             onClick: handleImportEntrySubmit,
             text: 'Import',

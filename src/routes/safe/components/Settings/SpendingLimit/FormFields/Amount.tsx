@@ -1,4 +1,4 @@
-import { TextField as SRCTextField } from '@jupisky/jupisky-react-components'
+import { TextField as SRCTextField } from '@gnosis.pm/safe-react-components'
 import { ReactElement } from 'react'
 import { useField } from 'react-final-form'
 import { useSelector } from 'react-redux'

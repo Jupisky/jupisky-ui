@@ -1,4 +1,4 @@
-import { Icon, Tooltip } from '@jupisky/jupisky-react-components'
+import { Icon, Tooltip } from '@gnosis.pm/safe-react-components'
 import { MultisigExecutionInfo } from '@gnosis.pm/safe-react-gateway-sdk'
 import { default as MuiIconButton } from '@material-ui/core/IconButton'
 import { ReactElement } from 'react'

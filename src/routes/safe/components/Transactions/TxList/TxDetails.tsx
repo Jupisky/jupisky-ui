@@ -1,4 +1,4 @@
-import { Icon, Link, Loader, Text } from '@jupisky/jupisky-react-components'
+import { Icon, Link, Loader, Text } from '@gnosis.pm/safe-react-components'
 import cn from 'classnames'
 import { ReactElement, useContext } from 'react'
 import styled from 'styled-components'

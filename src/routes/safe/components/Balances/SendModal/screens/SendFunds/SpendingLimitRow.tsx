@@ -1,4 +1,4 @@
-import { RadioButtons, Text } from '@jupisky/jupisky-react-components'
+import { RadioButtons, Text } from '@gnosis.pm/safe-react-components'
 import { BigNumber } from 'bignumber.js'
 import { ReactElement, useMemo } from 'react'
 import { useForm } from 'react-final-form'

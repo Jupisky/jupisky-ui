@@ -1,4 +1,4 @@
-import { GenericModal, Loader } from '@jupisky/jupisky-react-components'
+import { GenericModal, Loader } from '@gnosis.pm/safe-react-components'
 import { useState, lazy } from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'

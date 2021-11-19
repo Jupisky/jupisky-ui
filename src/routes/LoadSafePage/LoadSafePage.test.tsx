@@ -5,8 +5,8 @@ import { mockedEndpoints } from 'src/setupTests'
 import { fireEvent, getByText, render, screen, waitFor } from 'src/utils/test-utils'
 import { generateSafeRoute, history, SAFE_ROUTES } from 'src/routes/routes'
 import LoadSafePage from './LoadSafePage'
-import { generatePath } from 'react-router-dom'
 import * as safeVersion from 'src/logic/safe/utils/safeVersion'
+import { ETHEREUM_NETWORK } from 'src/config/networks/network.d'
 
 const getENSAddressSpy = jest.spyOn(getWeb3ReadOnly().eth.ens, 'getAddress')
 
@@ -18,15 +18,10 @@ jest.spyOn(safeVersion, 'getSafeVersionInfo').mockImplementation(async () => ({
 
 const rinkebyNetworkId = '4'
 const validSafeAddress = '0x57CB13cbef735FbDD65f5f2866638c546464E45F'
-const inValidSafeAddress = 'this-is–a-invalid-safe-address-value'
+const invalidSafeAddress = 'this-is–a-invalid-safe-address-value'
 const validSafeENSNameDomain = 'testENSDomain.eth'
 
 describe('<LoadSafePage>', () => {
-  afterEach(() => {
-    const constants = require('src/utils/constants')
-    Object.defineProperty(constants, 'IS_PRODUCTION', { value: false })
-  })
-
   it('renders LoadSafePage Form', () => {
     render(<LoadSafePage />)
 
@@ -34,7 +29,7 @@ describe('<LoadSafePage>', () => {
     expect(screen.getByTestId('load-safe-form')).toBeInTheDocument()
   })
 
-  it('shows all steps if we are not in production env', () => {
+  it('shows all steps', () => {
     render(<LoadSafePage />)
 
     expect(screen.getByText('Select network')).toBeInTheDocument()
@@ -43,27 +38,54 @@ describe('<LoadSafePage>', () => {
     expect(screen.getByText('Review')).toBeInTheDocument()
   })
 
-  it('hides Select network step if we are in production env', () => {
-    const constants = require('src/utils/constants')
-    Object.defineProperty(constants, 'IS_PRODUCTION', { value: true })
+  describe('Loading a specific Safe from URL', () => {
+    beforeAll(() => {
+      history.push('/load/rin:0xb3b83bf204C458B461de9B0CD2739DB152b4fa5A')
+    })
 
-    const customState = {
-      providers: {
-        name: 'MetaMask',
-        loaded: true,
-        available: true,
-        account: '0x680cde08860141F9D223cE4E620B10Cd6741037E',
-        network: '4',
-        smartContractWallet: false,
-        hardwareWallet: false,
-      },
-    }
-    render(<LoadSafePage />, customState)
+    afterAll(() => {
+      history.push('/load')
+    })
 
-    expect(screen.queryByText('Select network')).not.toBeInTheDocument()
-    expect(screen.getByText('Name and address')).toBeInTheDocument()
-    expect(screen.getByText('Owners')).toBeInTheDocument()
-    expect(screen.getByText('Review')).toBeInTheDocument()
+    it('hides Select network step if loading a pre-selected safe', async () => {
+      render(<LoadSafePage />)
+
+      // we wait for the validation of the safe address input
+      await screen.findByTestId('safeAddress-valid-address-adornment')
+
+      expect(screen.queryByText('Select network')).not.toBeInTheDocument()
+      const safeAddressInputNode = screen.getByTestId('load-safe-address-field')
+      const safeNameInputNode = screen.getByTestId('load-safe-name-field')
+      expect(safeNameInputNode?.getAttribute('placeholder')).toMatch(/.+-rinkeby-safe/)
+      expect((safeAddressInputNode as HTMLInputElement).value).toBe('0xb3b83bf204C458B461de9B0CD2739DB152b4fa5A')
+    })
+
+    it('uses a name from Address Book if available', async () => {
+      render(<LoadSafePage />, {
+        addressBook: [
+          {
+            address: '0xb3b83bf204C458B461de9B0CD2739DB152b4fa5A',
+            name: 'Test Jupisky',
+            chainId: ETHEREUM_NETWORK.RINKEBY,
+          },
+        ],
+      })
+
+      // we wait for the validation of the safe address input
+      await screen.findByTestId('safeAddress-valid-address-adornment')
+
+      expect(screen.queryByText('Select network')).not.toBeInTheDocument()
+      const safeAddressInputNode = screen.getByTestId('load-safe-address-field')
+      const safeNameInputNode = screen.getByTestId('load-safe-name-field')
+      expect(safeNameInputNode?.getAttribute('placeholder')).toBe('Test Safe')
+      expect((safeAddressInputNode as HTMLInputElement).value).toBe('0xb3b83bf204C458B461de9B0CD2739DB152b4fa5A')
+
+      // Change the address and check that the placeholder isn't taken from the AB anymore
+      fireEvent.change(safeAddressInputNode, { target: { value: '' } })
+      fireEvent.change(safeAddressInputNode, { target: { value: '0x3F4b507632681059a136701188bF6217F58c6A10' } })
+      await screen.findByTestId('safeAddress-valid-address-adornment')
+      expect(safeNameInputNode?.getAttribute('placeholder')).toMatch(/.+-rinkeby-safe/)
+    })
   })
 
   describe('Step 1: Select network', () => {
@@ -153,15 +175,6 @@ describe('<LoadSafePage>', () => {
   })
 
   describe('Step 2: Name and address', () => {
-    it('Shows a No account detected error message if no wallet is connected in production environment', () => {
-      const constants = require('src/utils/constants')
-      Object.defineProperty(constants, 'IS_PRODUCTION', { value: true })
-
-      render(<LoadSafePage />)
-
-      expect(screen.getByText('No account detected')).toBeInTheDocument()
-    })
-
     it('Checks if the Safe Address is a valid Safe Address', async () => {
       render(<LoadSafePage />)
 
@@ -179,6 +192,20 @@ describe('<LoadSafePage>', () => {
       })
     })
 
+    it('Checksums valid addresses', async () => {
+      render(<LoadSafePage />)
+
+      fireEvent.click(screen.getByText('Continue'))
+
+      const safeAddressInputNode: HTMLInputElement = screen.getByTestId('load-safe-address-field')
+
+      await waitFor(() => {
+        fireEvent.change(safeAddressInputNode, { target: { value: '0X9913B9180C20C6B0F21B6480C84422F6EBC4B808' } })
+      })
+
+      expect(safeAddressInputNode.value).toBe('0x9913B9180C20C6b0F21B6480c84422F6ebc4B808')
+    })
+
     it('Shows an error if the Safe Address is an invalid Safe Address', () => {
       render(<LoadSafePage />)
 
@@ -186,7 +213,7 @@ describe('<LoadSafePage>', () => {
 
       const safeAddressInputNode = screen.getByTestId('load-safe-address-field')
 
-      fireEvent.change(safeAddressInputNode, { target: { value: inValidSafeAddress } })
+      fireEvent.change(safeAddressInputNode, { target: { value: invalidSafeAddress } })
 
       expect(mockedEndpoints.getSafeInfo).toBeCalledTimes(0)
 
@@ -195,7 +222,7 @@ describe('<LoadSafePage>', () => {
       expect(screen.getByText(errorText)).toBeInTheDocument()
     })
 
-    it('Shows an error if the Safe Address is not found', async () => {
+    it('Shows an error if the Safe with a given address is not found', async () => {
       // simulating a 404 error by returning a rejected promise
       mockedEndpoints.getSafeInfo.mockImplementation(() =>
         Promise.reject({
@@ -247,7 +274,7 @@ describe('<LoadSafePage>', () => {
       })
     })
 
-    it('Shows an error if it the ENS Name Domain is not registered', () => {
+    it('Shows an error if a given ENS name is not registered', () => {
       const notExistingENSNameDomain = 'notExistingENSDomain.eth'
 
       // we do not want annoying warnings in the console caused by our mock in getENSAddress
@@ -279,7 +306,7 @@ describe('<LoadSafePage>', () => {
       getENSAddressSpy.mockClear()
     })
 
-    it('Shows an error if a NO valid Safe Address is registered in the ENS Name Domain', async () => {
+    it('Shows an error if NO valid Safe Address is registered as an ENS name', async () => {
       // simulating a 404 error by returning a rejected promise
       mockedEndpoints.getSafeInfo.mockImplementation(() =>
         Promise.reject({
@@ -540,6 +567,38 @@ describe('<LoadSafePage>', () => {
       // Connected wallet
       const safeAddressNameNode = screen.getByTestId('load-form-review-safe-name')
       expect(getByText(safeAddressNameNode, customSafeAddressName)).toBeInTheDocument()
+    })
+
+    it('shows name from Address Book', async () => {
+      const customSafeAddress = '0xb3b83bf204C458B461de9B0CD2739DB152b4fa5A'
+      const abName = 'Test Safe'
+
+      const { container } = render(<LoadSafePage />, {
+        addressBook: [
+          {
+            address: customSafeAddress,
+            name: abName,
+            chainId: ETHEREUM_NETWORK.RINKEBY,
+          },
+        ],
+      })
+
+      fireEvent.click(screen.getByText('Continue'))
+
+      const safeAddressInputNode = screen.getByTestId('load-safe-address-field') as HTMLInputElement
+
+      fireEvent.change(safeAddressInputNode, { target: { value: customSafeAddress } })
+
+      // we wait for the validation of the safe address input
+      await screen.findByTestId('safeAddress-valid-address-adornment')
+      fireEvent.click(screen.getByText('Next'))
+
+      // Go to the review step
+      const reviewButtonNode = container.querySelector('button[type=submit]') as HTMLButtonElement
+      fireEvent.click(reviewButtonNode)
+
+      const nameDisplay = screen.getByTestId('load-form-review-safe-name')
+      expect(nameDisplay.textContent).toBe(abName)
     })
   })
 

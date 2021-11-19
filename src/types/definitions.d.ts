@@ -1,5 +1,5 @@
 import 'styled-components'
-import { theme } from '@jupisky/jupisky-react-components'
+import { theme } from '@gnosis.pm/safe-react-components'
 
 type Theme = typeof theme
 

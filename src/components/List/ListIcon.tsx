@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Icon, IconTypes } from '@jupisky/jupisky-react-components'
+import { Icon, IconTypes } from '@gnosis.pm/safe-react-components'
 
 const StyledIcon = styled(Icon)`
   min-width: 32px !important;

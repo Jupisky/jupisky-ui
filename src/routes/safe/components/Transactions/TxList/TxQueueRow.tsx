@@ -1,4 +1,4 @@
-import { AccordionDetails } from '@jupisky/jupisky-react-components'
+import { AccordionDetails } from '@gnosis.pm/safe-react-components'
 import { TransactionStatus } from '@gnosis.pm/safe-react-gateway-sdk'
 import { ReactElement, useContext, useEffect, useState } from 'react'
 

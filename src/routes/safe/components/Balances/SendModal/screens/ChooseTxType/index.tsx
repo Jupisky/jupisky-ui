@@ -14,7 +14,7 @@ import Row from 'src/components/layout/Row'
 import { currentSafeFeaturesEnabled } from 'src/logic/safe/store/selectors'
 import { useStyles } from 'src/routes/safe/components/Balances/SendModal/screens/ChooseTxType/style'
 import ContractInteractionIcon from 'src/routes/safe/components/Transactions/TxList/assets/custom.svg'
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 
 import Collectible from '../assets/collectibles.svg'
 import Token from '../assets/token.svg'
@@ -102,7 +102,7 @@ const ChooseTxType = ({
           {erc721Enabled && (
             <Button
               className={classes.firstButton}
-              color="secondary"
+              color="primary"
               minHeight={52}
               minWidth={240}
               onClick={() => setActiveScreen('sendCollectible')}
@@ -119,7 +119,7 @@ const ChooseTxType = ({
           )}
           {contractInteractionEnabled && (
             <Button
-              color="secondary"
+              color="primary"
               disabled={disableContractInteraction}
               minHeight={52}
               minWidth={240}

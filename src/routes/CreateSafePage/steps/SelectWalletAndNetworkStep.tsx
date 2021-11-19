@@ -1,6 +1,6 @@
 import { ReactElement, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import { ButtonLink } from '@jupisky/jupisky-react-components'
+import { ButtonLink } from '@gnosis.pm/safe-react-components'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'

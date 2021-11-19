@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { TextField } from '@jupisky/jupisky-react-components'
+import { TextField } from '@gnosis.pm/safe-react-components'
 import createDecorator from 'final-form-calculate'
 import { useField, useFormState } from 'react-final-form'
 import styled from 'styled-components'

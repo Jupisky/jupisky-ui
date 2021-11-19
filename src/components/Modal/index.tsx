@@ -1,4 +1,4 @@
-import { Button, Icon, Loader, theme, Title as TitleSRC } from '@jupisky/jupisky-react-components'
+import { Button, Icon, Loader, theme, Title as TitleSRC } from '@gnosis.pm/safe-react-components'
 import { ButtonProps as ButtonPropsMUI, Modal as ModalMUI } from '@material-ui/core'
 import cn from 'classnames'
 import { ReactElement, ReactNode, ReactNodeArray } from 'react'
@@ -244,7 +244,7 @@ const Buttons = ({ cancelButtonProps = {}, confirmButtonProps = {} }: ButtonsPro
     <>
       <Button
         size="md"
-        color="secondary"
+        color="primary"
         variant="outlined"
         type={cancelProps?.onClick ? 'button' : 'submit'}
         disabled={cancelDisabled || [ButtonStatus.DISABLED, ButtonStatus.LOADING].includes(cancelStatus)}

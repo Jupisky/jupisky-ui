@@ -1,4 +1,4 @@
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'

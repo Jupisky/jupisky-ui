@@ -1,4 +1,4 @@
-import { EthHashInfo } from '@jupisky/jupisky-react-components'
+import { EthHashInfo } from '@gnosis.pm/safe-react-components'
 import cn from 'classnames'
 import { ReactElement, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

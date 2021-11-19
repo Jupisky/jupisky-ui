@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
-import { Text, Link, Icon } from '@jupisky/jupisky-react-components'
+import { Text, Link, Icon } from '@gnosis.pm/safe-react-components'
 
 const StyledIcon = styled(Icon)`
   svg {

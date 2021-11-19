@@ -8,7 +8,7 @@ import {
   Button,
   CopyToClipboardBtn,
   ExplorerButton,
-} from '@jupisky/jupisky-react-components'
+} from '@gnosis.pm/safe-react-components'
 
 import ButtonHelper from 'src/components/ButtonHelper'
 import FlexSpacer from 'src/components/FlexSpacer'
@@ -76,6 +76,13 @@ const StyledTextLabel = styled(Text)`
   color: ${(props: StyledTextLabelProps) => props.networkInfo?.textColor ?? fontColor};
   background-color: ${(props: StyledTextLabelProps) => props.networkInfo?.backgroundColor ?? border};
 `
+
+const StyldTextSafeName = styled(Text)`
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 const StyledEthHashInfo = styled(EthHashInfo)`
   p {
     color: ${({ theme }) => theme.colors.placeHolder};
@@ -150,9 +157,9 @@ const SafeHeader = ({
         </IdenticonContainer>
 
         {/* SafeInfo */}
-        <Text size="lg" center>
+        <StyldTextSafeName size="lg" center>
           {safeName}
-        </Text>
+        </StyldTextSafeName>
         <StyledEthHashInfo hash={address} shortenHash={4} textSize="sm" />
         <IconContainer>
           <ButtonHelper onClick={onReceiveClick}>
@@ -171,7 +178,7 @@ const SafeHeader = ({
         )}
 
         <StyledText size="xl">{balance}</StyledText>
-        <StyledButton size="md" disabled={!granted} color="secondary" variant="contained" onClick={onNewTransactionClick}>
+        <StyledButton size="md" disabled={!granted} color="primary" variant="contained" onClick={onNewTransactionClick}>
           <FixedIcon type="arrowSentWhite" />
           <Text size="xl" color="white">
             New transaction

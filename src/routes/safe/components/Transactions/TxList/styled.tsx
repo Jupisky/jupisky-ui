@@ -1,4 +1,4 @@
-import { Text, Accordion, AccordionDetails, AccordionSummary, EthHashInfo } from '@jupisky/jupisky-react-components'
+import { Text, Accordion, AccordionDetails, AccordionSummary, EthHashInfo } from '@gnosis.pm/safe-react-components'
 import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.div`
@@ -429,7 +429,7 @@ export const OwnerList = styled.ul`
     }
 
     span {
-      color: #00D6EB;
+      color: #008c73;
       font-weight: bold;
     }
   }

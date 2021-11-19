@@ -1,4 +1,4 @@
-import { Loader } from '@jupisky/jupisky-react-components'
+import { Loader } from '@gnosis.pm/safe-react-components'
 import { makeStyles } from '@material-ui/core/styles'
 import { Suspense, useEffect, useState, lazy } from 'react'
 
@@ -160,12 +160,12 @@ const SendModal = ({
 
         {activeScreen === 'contractInteraction' && isABI && (
           <ContractInteraction
-            isABI={isABI}
-            switchMethod={handleSwitchMethod}
             contractAddress={recipient}
             initialValues={tx as ContractInteractionTx}
+            isABI={isABI}
             onClose={onClose}
             onNext={handleContractInteractionCreation}
+            switchMethod={handleSwitchMethod}
           />
         )}
 
@@ -177,10 +177,9 @@ const SendModal = ({
           <SendCustomTx
             initialValues={tx as CustomTxProps}
             isABI={isABI}
-            switchMethod={handleSwitchMethod}
             onClose={onClose}
             onNext={handleCustomTxCreation}
-            contractAddress={recipient}
+            switchMethod={handleSwitchMethod}
           />
         )}
 

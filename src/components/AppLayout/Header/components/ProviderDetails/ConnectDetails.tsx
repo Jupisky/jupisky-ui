@@ -7,7 +7,7 @@ import Block from 'src/components/layout/Block'
 import Paragraph from 'src/components/layout/Paragraph'
 import Row from 'src/components/layout/Row'
 import { KeyRing } from 'src/components/AppLayout/Header/components/KeyRing'
-import { Card } from '@jupisky/jupisky-react-components'
+import { Card } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 
 const styles = () => ({

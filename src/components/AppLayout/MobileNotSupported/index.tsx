@@ -1,4 +1,4 @@
-import { Button, Text, Card, Icon } from '@jupisky/jupisky-react-components'
+import { Button, Text, Card, Icon } from '@gnosis.pm/safe-react-components'
 import { alpha } from '@material-ui/core/styles/colorManipulator'
 import styled from 'styled-components'
 import { ReactElement } from 'react'
@@ -112,10 +112,10 @@ export const MobileNotSupported = ({ onClose }: Props): ReactElement => {
       <Overlay>
         <ModalApp>
           <StyledCard>
-            <Text size="lg">The Gnosis Safe web app is not optimized for mobile.</Text>
+            <Text size="lg">The Jupisky web app is not optimized for mobile.</Text>
             <Text size="lg">Get the mobile app for a better experience.</Text>
             <Button size="md" color="primary" variant="contained">
-              <StyledLink target="_blank" href="https://gnosis-safe.io/#mobile" rel="noopener noreferrer">
+              <StyledLink target="_blank" href="https://jupisky.com" rel="noopener noreferrer">
                 <Text color="white" size="xl">
                   Get the App
                 </Text>

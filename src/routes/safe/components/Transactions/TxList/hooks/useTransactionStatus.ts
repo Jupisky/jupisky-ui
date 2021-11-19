@@ -1,4 +1,4 @@
-import { ThemeColors } from '@jupisky/jupisky-react-components/dist/theme'
+import { ThemeColors } from '@gnosis.pm/safe-react-components/dist/theme'
 import { MultisigExecutionInfo } from '@gnosis.pm/safe-react-gateway-sdk'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'

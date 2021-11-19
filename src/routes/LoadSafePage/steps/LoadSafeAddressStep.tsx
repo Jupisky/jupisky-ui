@@ -12,7 +12,8 @@ import Field from 'src/components/forms/Field'
 import TextField from 'src/components/forms/TextField'
 import AddressInput from 'src/components/forms/AddressInput'
 import { ScanQRWrapper } from 'src/components/ScanQRModal/ScanQRWrapper'
-import { mustBeEthereumAddress } from 'src/components/forms/validator'
+import { isValidAddress } from 'src/utils/isValidAddress'
+import { isChecksumAddress } from 'src/utils/checksumAddress'
 import { getSafeInfo } from 'src/logic/safe/utils/safeInformation'
 import { lg, secondary } from 'src/theme/variables'
 import { AddressBookEntry, makeAddressBookEntry } from 'src/logic/addressBook/model/addressBook'
@@ -21,11 +22,12 @@ import {
   FIELD_LOAD_CUSTOM_SAFE_NAME,
   FIELD_LOAD_IS_LOADING_SAFE_ADDRESS,
   FIELD_LOAD_SAFE_ADDRESS,
-  FIELD_LOAD_SUGGESTED_SAFE_NAME,
   FIELD_SAFE_OWNER_LIST,
   FIELD_SAFE_THRESHOLD,
+  LoadSafeFormValues,
 } from '../fields/loadFields'
 import NetworkLabel from 'src/components/NetworkLabel/NetworkLabel'
+import { getLoadSafeName } from '../fields/utils'
 
 export const loadSafeAddressStepLabel = 'Name and address'
 
@@ -50,25 +52,28 @@ function LoadSafeAddressStep(): ReactElement {
   }, [safeAddress])
 
   useEffect(() => {
-    async function checkSafeAddress() {
-      const isValidSafeAddress = safeAddress && !mustBeEthereumAddress(safeAddress)
-      if (isValidSafeAddress) {
-        try {
-          setIsSafeInfoLoading(true)
-          const { owners, threshold } = await getSafeInfo(safeAddress)
-          const ownersWithName = owners.map(({ value: address }) =>
-            makeAddressBookEntry(addressBook[address] || { address, name: '' }),
-          )
-          setOwnersWithName(ownersWithName)
-          setThreshold(threshold)
-          setIsValidSafeAddress(true)
-        } catch (error) {
-          setOwnersWithName([])
-          setThreshold(undefined)
-          setIsValidSafeAddress(false)
-        }
-        setIsSafeInfoLoading(false)
+    const checkSafeAddress = async () => {
+      const isValidSafeAddress = isValidAddress(safeAddress) && isChecksumAddress(safeAddress)
+      if (!isValidSafeAddress) {
+        return
       }
+
+      setIsSafeInfoLoading(true)
+      try {
+        const { owners, threshold } = await getSafeInfo(safeAddress)
+        setIsSafeInfoLoading(false)
+        const ownersWithName = owners.map(({ value: address }) =>
+          makeAddressBookEntry(addressBook[address] || { address, name: '' }),
+        )
+        setOwnersWithName(ownersWithName)
+        setThreshold(threshold)
+        setIsValidSafeAddress(true)
+      } catch (error) {
+        setOwnersWithName([])
+        setThreshold(undefined)
+        setIsValidSafeAddress(false)
+      }
+      setIsSafeInfoLoading(false)
     }
 
     checkSafeAddress()
@@ -95,8 +100,8 @@ function LoadSafeAddressStep(): ReactElement {
     closeQrModal()
   }
 
-  const formValues = loadSafeForm.getState().values
-  const safeName = formValues[FIELD_LOAD_CUSTOM_SAFE_NAME] || formValues[FIELD_LOAD_SUGGESTED_SAFE_NAME]
+  const formValues = loadSafeForm.getState().values as LoadSafeFormValues
+  const safeName = getLoadSafeName(formValues, addressBook)
 
   return (
     <Container data-testid={'load-safe-address-step'}>
@@ -186,7 +191,6 @@ export const loadSafeAddressStepValidations = (values: {
   let errors = {}
 
   const safeAddress = values[FIELD_LOAD_SAFE_ADDRESS]
-  const ownerList = values[FIELD_SAFE_OWNER_LIST]
 
   if (!safeAddress) {
     errors = {
@@ -196,13 +200,8 @@ export const loadSafeAddressStepValidations = (values: {
     return errors
   }
 
-  const hasOwners = ownerList.length > 0
-
-  const isValidSafeAddress = safeAddress && !mustBeEthereumAddress(safeAddress) && hasOwners
-
-  const isLoadingSafeAddress = values[FIELD_LOAD_IS_LOADING_SAFE_ADDRESS]
-
   // this is to prevent show and error in the safe address field while is loading...
+  const isLoadingSafeAddress = values[FIELD_LOAD_IS_LOADING_SAFE_ADDRESS]
   if (isLoadingSafeAddress) {
     return {
       ...errors,
@@ -210,6 +209,9 @@ export const loadSafeAddressStepValidations = (values: {
     }
   }
 
+  // check that the address is actually a Safe (must have owners)
+  const ownerList = values[FIELD_SAFE_OWNER_LIST]
+  const isValidSafeAddress = ownerList.length > 0 && isValidAddress(safeAddress)
   if (!isValidSafeAddress) {
     errors = {
       ...errors,

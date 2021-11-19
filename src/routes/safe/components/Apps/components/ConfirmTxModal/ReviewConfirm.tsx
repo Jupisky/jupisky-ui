@@ -1,5 +1,5 @@
 import { Operation } from '@gnosis.pm/safe-react-gateway-sdk'
-import { EthHashInfo, Text } from '@jupisky/jupisky-react-components'
+import { EthHashInfo, Text } from '@gnosis.pm/safe-react-components'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -29,6 +29,7 @@ import { ButtonStatus, Modal } from 'src/components/Modal'
 
 import { ConfirmTxModalProps, DecodedTxDetail } from '.'
 import { grantedSelector } from 'src/routes/safe/container/selector'
+import ExecuteCheckbox from 'src/components/ExecuteCheckbox'
 
 const Container = styled.div`
   max-width: 480px;
@@ -58,6 +59,7 @@ const StyledBlock = styled(Block)`
 `
 
 type Props = ConfirmTxModalProps & {
+  onReject: () => void
   showDecodedTxData: (decodedTxDetails: DecodedTxDetail) => void
   hidden: boolean // used to prevent re-rendering the modal each time a tx is inspected
 }
@@ -76,7 +78,7 @@ export const ReviewConfirm = ({
   hidden,
   onUserConfirm,
   onClose,
-  onTxReject,
+  onReject,
   requestId,
   showDecodedTxData,
 }: Props): ReactElement => {
@@ -124,6 +126,8 @@ export const ReviewConfirm = ({
   })
 
   const [buttonStatus, setButtonStatus] = useEstimationStatus(txEstimationExecutionStatus)
+  const [executionApproved, setExecutionApproved] = useState<boolean>(true)
+  const doExecute = isExecution && executionApproved
 
   // Decode tx data.
   useEffect(() => {
@@ -134,11 +138,6 @@ export const ReviewConfirm = ({
 
     decodeTxData()
   }, [txData])
-
-  const handleTxRejection = () => {
-    onTxReject(requestId)
-    onClose()
-  }
 
   const handleUserConfirmation = (safeTxHash: string): void => {
     onUserConfirm(safeTxHash, requestId)
@@ -162,9 +161,10 @@ export const ReviewConfirm = ({
           safeTxGas: txParameters.safeTxGas,
           ethParameters: txParameters,
           notifiedTransaction: TX_NOTIFICATION_TYPES.STANDARD_TX,
+          delayExecution: !executionApproved,
         },
         handleUserConfirmation,
-        handleTxRejection,
+        onReject,
       ),
     )
 
@@ -197,11 +197,11 @@ export const ReviewConfirm = ({
       safeTxGas={Math.max(parseInt(gasEstimation), params?.safeTxGas || 0).toString()}
       closeEditModalCallback={closeEditModalCallback}
       isOffChainSignature={isOffChainSignature}
-      isExecution={isExecution}
+      isExecution={doExecute}
     >
       {(txParameters, toggleEditMode) => (
         <div hidden={hidden}>
-          <ModalHeader title={app.name} iconUrl={app.iconUrl} onClose={handleTxRejection} />
+          <ModalHeader title={app.name} iconUrl={app.iconUrl} onClose={onReject} />
 
           <Hairline />
 
@@ -225,13 +225,17 @@ export const ReviewConfirm = ({
             <DecodeTxsWrapper>
               <DecodeTxs txs={txs} decodedData={decodedData} onTxItemClick={showDecodedTxData} />
             </DecodeTxsWrapper>
+
             {!isMultiSend && <Divider />}
+
+            {isExecution && <ExecuteCheckbox onChange={setExecutionApproved} />}
+
             {/* Tx Parameters */}
             <TxParametersDetail
               txParameters={txParameters}
               onEdit={toggleEditMode}
               isTransactionCreation={isCreation}
-              isTransactionExecution={isExecution}
+              isTransactionExecution={doExecute}
               isOffChainSignature={isOffChainSignature}
             />
           </Container>
@@ -241,7 +245,7 @@ export const ReviewConfirm = ({
             <TransactionFeesWrapper>
               <TransactionFees
                 gasCostFormatted={isOwner ? gasCostFormatted : undefined}
-                isExecution={isExecution}
+                isExecution={doExecute}
                 isCreation={isCreation}
                 isOffChainSignature={isOffChainSignature}
                 txEstimationExecutionStatus={txEstimationExecutionStatus}
@@ -252,7 +256,7 @@ export const ReviewConfirm = ({
           {/* Buttons */}
           <Modal.Footer withoutBorder={txEstimationExecutionStatus !== EstimationStatus.LOADING}>
             <Modal.Footer.Buttons
-              cancelButtonProps={{ onClick: handleTxRejection }}
+              cancelButtonProps={{ onClick: onReject }}
               confirmButtonProps={{
                 onClick: () => confirmTransactions(txParameters),
                 disabled: !isOwner,

@@ -1,4 +1,4 @@
-import { Loader, Stepper } from '@jupisky/jupisky-react-components'
+import { Loader, Stepper } from '@gnosis.pm/safe-react-components'
 import { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'

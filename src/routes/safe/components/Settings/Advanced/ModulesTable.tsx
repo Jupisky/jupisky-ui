@@ -1,4 +1,4 @@
-import { Icon, EthHashInfo } from '@jupisky/jupisky-react-components'
+import { Icon, EthHashInfo } from '@gnosis.pm/safe-react-components'
 import TableContainer from '@material-ui/core/TableContainer'
 import cn from 'classnames'
 import { useState, Fragment } from 'react'

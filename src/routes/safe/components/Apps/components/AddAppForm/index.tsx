@@ -1,4 +1,4 @@
-import { Icon, Link, Loader, Text, TextField } from '@jupisky/jupisky-react-components'
+import { Icon, Link, Loader, Text, TextField } from '@gnosis.pm/safe-react-components'
 import { useState, ReactElement, useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -69,6 +69,8 @@ const INITIAL_VALUES: AddAppFormValues = {
 }
 
 const DEFAULT_APP_INFO = getEmptySafeApp()
+
+const CUSTOM_SAFE_APPS_LINK = 'https://docs.gnosis-safe.io/build/sdks/safe-apps'
 
 interface AddAppProps {
   appList: SafeApp[]

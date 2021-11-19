@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Close from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
-import { Title, Text, Divider, Link, Icon } from '@jupisky/jupisky-react-components'
+import { Title, Text, Divider, Link, Icon } from '@gnosis.pm/safe-react-components'
 import styled from 'styled-components'
 
 import Field from 'src/components/forms/Field'

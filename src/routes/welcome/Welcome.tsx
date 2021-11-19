@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { Button, Card, Title, Text } from '@jupisky/jupisky-react-components'
+import { Button, Card, Title, Text } from '@gnosis.pm/safe-react-components'
 import Divider from '@material-ui/core/Divider'
 import styled from 'styled-components'
 

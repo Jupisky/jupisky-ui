@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
-import { Icon, Divider as DividerSRC } from '@jupisky/jupisky-react-components'
+import { Icon, Divider as DividerSRC } from '@gnosis.pm/safe-react-components'
 
 const Wrapper = styled.div`
   display: flex;

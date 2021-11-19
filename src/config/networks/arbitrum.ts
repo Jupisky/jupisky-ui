@@ -12,7 +12,7 @@ import {
 const baseConfig: EnvironmentSettings = {
   clientGatewayUrl: 'https://safe-client.gnosis.io/v1',
   txServiceUrl: 'https://safe-transaction.arbitrum.gnosis.io/api/v1',
-  gasPrice: 2e9,
+  gasPriceOracles: [],
   rpcServiceUrl: 'https://arb1.arbitrum.io/rpc',
   safeAppsRpcServiceUrl: 'https://arb1.arbitrum.io/rpc',
   networkExplorerName: 'Arbitrum explorer',
@@ -38,7 +38,6 @@ const arbitrum: NetworkConfig = {
     backgroundColor: '#2A3245',
     textColor: '#ffffff',
     label: 'Arbitrum',
-    isTestNet: false,
     ethereumLayer: ETHEREUM_LAYER.L2,
     nativeCoin: {
       address: '0x0000000000000000000000000000000000000000',
