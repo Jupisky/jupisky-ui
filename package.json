@@ -15,7 +15,7 @@
     "name": "Jupisky Team",
     "email": "sullfurix@gmail.com"
   },
-  "homepage": "/app",
+  "homepage": "/",
   "main": "public/electron.js",
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
