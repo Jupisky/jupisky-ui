@@ -13,7 +13,7 @@ export function getSubdomainUrl(network: NETWORK_TO_MIGRATE): string {
   const hostname = location.hostname
 
   if (hostname === 'jupisky.com') {
-    return `https://jupisky.com/app`
+    return `https://jupisky.com`
   } else if (hostname.includes('staging.gnosisdev.com')) {
     return `https://safe-team-${network}.staging.gnosisdev.com/app`
   } else if (hostname.includes('dev.gnosisdev.com')) {
